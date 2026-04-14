@@ -1,0 +1,179 @@
+﻿<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PlatePreps.Store" Alias="Self" Provider="Devart.Data.Oracle" ProviderManifestToken="Oracle, 11.2.0.2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:devart="http://devart.com/schemas/edml/StorageSchemaExtensions/1.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="PlatePrepsEntitiesStoreContainer">
+          <EntitySet Name="PREPS_ASSAY_PLATEs" EntityType="PlatePreps.Store.PREPS_ASSAY_PLATE" store:Type="Tables" Schema="HTSA" Table="PREPS_ASSAY_PLATE" />
+          <EntitySet Name="PREPS_ASSAY_WELLs" EntityType="PlatePreps.Store.PREPS_ASSAY_WELL" store:Type="Tables" Schema="HTSA" Table="PREPS_ASSAY_WELL" />
+        </EntityContainer>
+        <EntityType Name="PREPS_ASSAY_PLATE">
+          <Key>
+            <PropertyRef Name="PLATE_ID" />
+          </Key>
+          <Property Name="PLATE_ID" Type="VARCHAR2" Nullable="false" MaxLength="15" />
+          <Property Name="ASSAY_ID" Type="VARCHAR2" MaxLength="10" />
+          <Property Name="WELLS_PER_PLATE" Type="decimal" />
+          <Property Name="CREATED_DATE" Type="DATE" />
+          <Property Name="CREATED_BY" Type="VARCHAR2" MaxLength="100" />
+          <Property Name="PREPS_ASSAY_ID" Type="decimal" />
+          <Property Name="PREPS_ORDER_ID" Type="decimal" />
+          <Property Name="PLATE_PREP_STATUS" Type="VARCHAR2" MaxLength="15" />
+          <Property Name="LIBRARY_ID" Type="decimal" />
+          <Property Name="RUN_COUNT" Type="decimal" />
+        </EntityType>
+        <EntityType Name="PREPS_ASSAY_WELL">
+          <Key>
+            <PropertyRef Name="PLATE_ID" />
+            <PropertyRef Name="WELL_ADDRESS" />
+            <PropertyRef Name="ANUMBER" />
+            <PropertyRef Name="LOT_NUMBER" />
+          </Key>
+          <Property Name="PLATE_ID" Type="VARCHAR2" Nullable="false" MaxLength="15" />
+          <Property Name="WELL_ADDRESS" Type="VARCHAR2" Nullable="false" MaxLength="4" />
+          <Property Name="ANUMBER" Type="VARCHAR2" Nullable="false" MaxLength="15" />
+          <Property Name="LOT_NUMBER" Type="decimal" Nullable="false" />
+          <Property Name="VOL_NL" Type="decimal" />
+          <Property Name="CONC_UM" Type="decimal" />
+          <Property Name="ERROR" Type="VARCHAR2" MaxLength="3" />
+          <Property Name="TRANSFER_ERROR" Type="VARCHAR2" MaxLength="500" />
+          <Property Name="CREATED_DATE" Type="DATE" />
+          <Property Name="CREATED_BY" Type="VARCHAR2" MaxLength="100" />
+          <Property Name="INVENTORY_PLATE_BARCODE" Type="VARCHAR2" MaxLength="15" />
+          <Property Name="INVENTORY_WELL_ADDRESS" Type="VARCHAR2" MaxLength="4" />
+          <Property Name="ECHO_LOGFILE_NAME" Type="VARCHAR2" MaxLength="200" />
+          <Property Name="UPDATED_DATE" Type="DATE" />
+          <Property Name="UPDATED_BY" Type="VARCHAR2" MaxLength="100" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PlatePreps" Alias="Self" d4p1:ViewGeneration="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:devart="http://devart.com/schemas/edml/ConceptualSchemaExtensions/1.0" xmlns:ed="http://devart.com/schemas/EntityDeveloper/1.0" annotation:UseStrongSpatialTypes="false" xmlns:d4p1="http://devart.com/schemas/edml/ConceptualSchemaExtensions/1.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="PlatePrepsEntities" annotation:LazyLoadingEnabled="true" ed:Guid="7cd61755-b964-4c31-aff5-30df50f4bf74">
+          <EntitySet Name="AssayPlates" EntityType="PlatePreps.AssayPlate" />
+          <EntitySet Name="AssayWells" EntityType="PlatePreps.AssayWell" />
+          <AssociationSet Name="AssayPlate_AssayWellSet" Association="PlatePreps.AssayPlate_AssayWell">
+            <End Role="AssayPlate" EntitySet="AssayPlates" />
+            <End Role="AssayWells" EntitySet="AssayWells" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AssayPlate" ed:Guid="ea80547f-84e5-4342-93f6-9689ec037f89">
+          <Key>
+            <PropertyRef Name="PlateId" />
+          </Key>
+          <Property Name="PlateId" Type="String" Nullable="false" MaxLength="15" ed:ValidateMaxLength="15" ed:ValidateRequired="true" ed:Guid="20fc7b2f-8c93-4a56-b793-73d246ed2c9e" />
+          <Property Name="AssayId" Type="String" MaxLength="10" ed:ValidateMaxLength="10" ed:ValidateRequired="false" ed:Guid="ff10c652-9a2c-44b2-87bf-d4665e7febcc" />
+          <Property Name="WellsPerPlate" Type="Decimal" ed:ValidateRequired="false" ed:Guid="8c9c9020-dc9a-4df3-94af-0d2277a29a00" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" ed:ValidateRequired="false" ed:Guid="b3c9531e-938d-45c7-af43-72f89a732bb0" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" ed:ValidateMaxLength="100" ed:ValidateRequired="false" ed:Guid="a9d6934c-848f-40c2-a9bc-cedc3455c818" />
+          <Property Name="AssayId1" Type="Decimal" ed:ValidateRequired="false" ed:Guid="51c383cd-c35f-4333-adbd-4c84d3b0b2c6" />
+          <Property Name="OrderId" Type="Decimal" ed:ValidateRequired="false" ed:Guid="d13d0fd7-95c4-4f50-9c42-3ff0a6fb6474" />
+          <Property Name="PlatePrepStatus" Type="String" MaxLength="15" ed:ValidateMaxLength="15" ed:ValidateRequired="false" ed:Guid="a3c7db3d-6f1c-4d00-8c14-195c68704cd2" />
+          <Property Name="LibraryId" Type="Decimal" ed:ValidateRequired="false" ed:Guid="46a65e80-fb5b-48ce-9bee-c8151cbfb1c1" />
+          <Property Name="RunCount" Type="Decimal" ed:ValidateRequired="false" ed:Guid="fb18f0cf-bd6d-4488-929f-e8df8d19fdbf" />
+          <NavigationProperty Name="AssayWells" Relationship="PlatePreps.AssayPlate_AssayWell" FromRole="AssayPlate" ToRole="AssayWells" ed:Guid="0889ba4a-8e29-4db7-930e-2a55870d8c34" />
+        </EntityType>
+        <EntityType Name="AssayWell" ed:Guid="226852d2-e60d-40a8-98d5-7beeb8fe9c0c">
+          <Key>
+            <PropertyRef Name="PlateId" />
+            <PropertyRef Name="WellAddress" />
+            <PropertyRef Name="Anumber" />
+            <PropertyRef Name="LotNumber" />
+          </Key>
+          <Property Name="PlateId" Type="String" Nullable="false" MaxLength="15" ed:ValidateMaxLength="15" ed:ValidateRequired="true" ed:Guid="1f7f3c1e-945a-4b11-a7d8-ef39f114d0cf" />
+          <Property Name="WellAddress" Type="String" Nullable="false" MaxLength="4" ed:ValidateMaxLength="4" ed:ValidateRequired="true" ed:Guid="29b6623a-edf8-42b5-8aeb-e0f8544276c6" />
+          <Property Name="Anumber" Type="String" Nullable="false" MaxLength="15" ed:ValidateMaxLength="15" ed:ValidateRequired="true" ed:Guid="0c9c851e-21b2-4995-be6f-475eadfe3437" />
+          <Property Name="LotNumber" Type="Decimal" Nullable="false" ed:ValidateRequired="true" ed:Guid="641bde6e-a1f2-47a7-a8e0-d8aa8a1bea87" />
+          <Property Name="VolNl" Type="Decimal" ed:ValidateRequired="false" ed:Guid="a4176d9b-f708-46b1-a7a8-96dd647a2e31" />
+          <Property Name="ConcUm" Type="Decimal" ed:ValidateRequired="false" ed:Guid="57512b37-b487-447c-8550-2674f010c166" />
+          <Property Name="Error" Type="String" MaxLength="3" ed:ValidateMaxLength="3" ed:ValidateRequired="false" ed:Guid="63ba5113-f66d-48f9-84fa-63900cc0ffd3" />
+          <Property Name="TransferError" Type="String" MaxLength="500" ed:ValidateMaxLength="500" ed:ValidateRequired="false" ed:Guid="a1d6d7b9-d0dc-4d31-9e6e-236ba591e684" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" ed:ValidateRequired="false" ed:Guid="b1e45f14-fe0a-459a-a972-7a16514c7477" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" ed:ValidateMaxLength="100" ed:ValidateRequired="false" ed:Guid="dcc7005b-9384-498b-94a1-fa378b2d808a" />
+          <Property Name="InventoryPlateBarcode" Type="String" MaxLength="15" ed:ValidateMaxLength="15" ed:ValidateRequired="false" ed:Guid="0bdbbf9d-431b-458f-a6c2-d918f11a12ea" />
+          <Property Name="InventoryWellAddress" Type="String" MaxLength="4" ed:ValidateMaxLength="4" ed:ValidateRequired="false" ed:Guid="9e16d9d0-3f3c-4506-b7d4-1ed8fb43d008" />
+          <Property Name="EchoLogfileName" Type="String" MaxLength="200" ed:ValidateMaxLength="200" ed:ValidateRequired="false" ed:Guid="e727b073-b977-478e-8eee-4c7211952c68" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="0" ed:ValidateRequired="false" ed:Guid="bad96446-b0a7-409a-9e3c-527a4ac92266" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="100" ed:ValidateMaxLength="100" ed:ValidateRequired="false" ed:Guid="d5c93f00-8351-466a-9a3e-f86afef4d312" />
+          <NavigationProperty Name="AssayPlate" Relationship="PlatePreps.AssayPlate_AssayWell" FromRole="AssayWells" ToRole="AssayPlate" ed:Guid="366dfd63-dda3-4502-b298-5bb32de1e86e" />
+        </EntityType>
+        <Association Name="AssayPlate_AssayWell" ed:Guid="f46b4693-a407-4d68-8ce2-64bbfbd74f75">
+          <End Role="AssayPlate" Type="PlatePreps.AssayPlate" Multiplicity="1" />
+          <End Role="AssayWells" Type="PlatePreps.AssayWell" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssayPlate">
+              <PropertyRef Name="PlateId" />
+            </Principal>
+            <Dependent Role="AssayWells">
+              <PropertyRef Name="PlateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- MSL content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PlatePrepsEntitiesStoreContainer" CdmEntityContainer="PlatePrepsEntities">
+          <EntitySetMapping Name="AssayPlates">
+            <EntityTypeMapping TypeName="PlatePreps.AssayPlate">
+              <MappingFragment StoreEntitySet="PREPS_ASSAY_PLATEs">
+                <ScalarProperty Name="PlateId" ColumnName="PLATE_ID" />
+                <ScalarProperty Name="AssayId" ColumnName="ASSAY_ID" />
+                <ScalarProperty Name="WellsPerPlate" ColumnName="WELLS_PER_PLATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="AssayId1" ColumnName="PREPS_ASSAY_ID" />
+                <ScalarProperty Name="OrderId" ColumnName="PREPS_ORDER_ID" />
+                <ScalarProperty Name="PlatePrepStatus" ColumnName="PLATE_PREP_STATUS" />
+                <ScalarProperty Name="LibraryId" ColumnName="LIBRARY_ID" />
+                <ScalarProperty Name="RunCount" ColumnName="RUN_COUNT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssayWells">
+            <EntityTypeMapping TypeName="PlatePreps.AssayWell">
+              <MappingFragment StoreEntitySet="PREPS_ASSAY_WELLs">
+                <ScalarProperty Name="PlateId" ColumnName="PLATE_ID" />
+                <ScalarProperty Name="WellAddress" ColumnName="WELL_ADDRESS" />
+                <ScalarProperty Name="Anumber" ColumnName="ANUMBER" />
+                <ScalarProperty Name="LotNumber" ColumnName="LOT_NUMBER" />
+                <ScalarProperty Name="VolNl" ColumnName="VOL_NL" />
+                <ScalarProperty Name="ConcUm" ColumnName="CONC_UM" />
+                <ScalarProperty Name="Error" ColumnName="ERROR" />
+                <ScalarProperty Name="TransferError" ColumnName="TRANSFER_ERROR" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="InventoryPlateBarcode" ColumnName="INVENTORY_PLATE_BARCODE" />
+                <ScalarProperty Name="InventoryWellAddress" ColumnName="INVENTORY_WELL_ADDRESS" />
+                <ScalarProperty Name="EchoLogfileName" ColumnName="ECHO_LOGFILE_NAME" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UPDATED_DATE" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UPDATED_BY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <edmx:Diagrams>
+      <Diagram Name="Main" />
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

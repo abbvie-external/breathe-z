@@ -1,0 +1,377 @@
+﻿<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BreatheModel.Store" Alias="Self" Provider="Devart.Data.Oracle" ProviderManifestToken="Oracle, 11.2.0.3" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:devart="http://devart.com/schemas/edml/StorageSchemaExtensions/1.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="BeatheEntitiesStoreContainer">
+          <EntitySet Name="RESULT_VALUEs" EntityType="BreatheModel.Store.RESULT_VALUE" store:Type="Tables" Schema="BREATHE" Table="RESULT_VALUE" />
+          <EntitySet Name="MEASUREMENTs" EntityType="BreatheModel.Store.MEASUREMENT" store:Type="Tables" Schema="BREATHE" Table="MEASUREMENT" />
+          <EntitySet Name="LOCATIONs" EntityType="BreatheModel.Store.LOCATION" store:Type="Tables" Schema="BREATHE" Table="LOCATION" />
+          <EntitySet Name="EXPERIMENTs" EntityType="BreatheModel.Store.EXPERIMENT" store:Type="Tables" Schema="BREATHE" Table="EXPERIMENT" />
+          <EntitySet Name="CALCULATIONs" EntityType="BreatheModel.Store.CALCULATION" store:Type="Tables" Schema="BREATHE" Table="CALCULATION" />
+          <AssociationSet Name="MEAS__HV__RES_VALS" Association="BreatheModel.Store.MEAS__HV__RES_VALS">
+            <End Role="MEASUREMENT" EntitySet="MEASUREMENTs" />
+            <End Role="RESULT_VALUE" EntitySet="RESULT_VALUEs" />
+          </AssociationSet>
+          <AssociationSet Name="LOCATIONS__HV__MEASUREMENTS" Association="BreatheModel.Store.LOCATIONS__HV__MEASUREMENTS">
+            <End Role="LOCATION" EntitySet="LOCATIONs" />
+            <End Role="MEASUREMENT" EntitySet="MEASUREMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="EXPTS__HV__LOCS" Association="BreatheModel.Store.EXPTS__HV__LOCS">
+            <End Role="EXPERIMENT" EntitySet="EXPERIMENTs" />
+            <End Role="LOCATION" EntitySet="LOCATIONs" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0030187" Association="BreatheModel.Store.SYS_C0030187">
+            <End Role="LOCATION" EntitySet="LOCATIONs" />
+            <End Role="CALCULATION" EntitySet="CALCULATIONs" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="RESULT_VALUE">
+          <Key>
+            <PropertyRef Name="MEASUREMENT_ID" />
+            <PropertyRef Name="NAME" />
+          </Key>
+          <Property Name="MEASUREMENT_ID" Type="guid" Nullable="false" />
+          <Property Name="NAME" Type="VARCHAR2" Nullable="false" MaxLength="100" />
+          <Property Name="VALUE" Type="double" />
+        </EntityType>
+        <EntityType Name="MEASUREMENT">
+          <Key>
+            <PropertyRef Name="MEASUREMENT_ID" />
+          </Key>
+          <Property Name="MEASUREMENT_ID" Type="guid" Nullable="false" />
+          <Property Name="LOCATION_ID" Type="guid" Nullable="false" />
+          <Property Name="RESULT_INDEX" Type="int" Nullable="false" />
+          <Property Name="STAGE_NAME" Type="VARCHAR2" Nullable="false" MaxLength="32" />
+          <Property Name="ELAPSED_TIME_IN_MIN" Type="double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOCATION">
+          <Key>
+            <PropertyRef Name="LOCATION_ID" />
+          </Key>
+          <Property Name="LOCATION_ID" Type="guid" Nullable="false" />
+          <Property Name="EXPERIMENT_ID" Type="guid" Nullable="false" />
+          <Property Name="PLATE_POSITION" Type="int" Nullable="false" />
+          <Property Name="WELL_ADDRESS" Type="VARCHAR2" Nullable="false" MaxLength="4" />
+          <Property Name="WELL_ROW" Type="VARCHAR2" Nullable="false" MaxLength="2" />
+          <Property Name="WELL_COL" Type="VARCHAR2" Nullable="false" MaxLength="2" />
+          <Property Name="CURVE_REF" Type="VARCHAR2" MaxLength="100" />
+          <Property Name="PRIMARY_LOT" Type="decimal" />
+          <Property Name="PRIMARY_COMPOUND" Type="VARCHAR2" MaxLength="25" />
+          <Property Name="PRIMARY_CONC" Type="decimal" />
+          <Property Name="VALID" Type="bool" Nullable="false" DefaultValue="True" />
+        </EntityType>
+        <EntityType Name="EXPERIMENT">
+          <Key>
+            <PropertyRef Name="EXPERIMENT_ID" />
+          </Key>
+          <Property Name="EXPERIMENT_ID" Type="guid" Nullable="false" />
+          <Property Name="FILE_NAME" Type="VARCHAR2" Nullable="false" MaxLength="255" />
+          <Property Name="FILE_PATH" Type="VARCHAR2" Nullable="false" MaxLength="1024" />
+          <Property Name="USER_NAME" Type="VARCHAR2" Nullable="false" MaxLength="100" />
+          <Property Name="PROTOCOL" Type="VARCHAR2" Nullable="false" MaxLength="255" />
+          <Property Name="ANALYSIS_TYPE" Type="VARCHAR2" MaxLength="25" />
+          <Property Name="PLATE_FORMAT" Type="decimal" />
+        </EntityType>
+        <EntityType Name="CALCULATION">
+          <Key>
+            <PropertyRef Name="LOCATION_ID" />
+            <PropertyRef Name="NAME" />
+          </Key>
+          <Property Name="LOCATION_ID" Type="guid" Nullable="false" />
+          <Property Name="NAME" Type="VARCHAR2" Nullable="false" MaxLength="100" />
+          <Property Name="Value" Type="double" />
+        </EntityType>
+        <Association Name="MEAS__HV__RES_VALS">
+          <End Role="MEASUREMENT" Type="BreatheModel.Store.MEASUREMENT" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RESULT_VALUE" Type="BreatheModel.Store.RESULT_VALUE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEASUREMENT">
+              <PropertyRef Name="MEASUREMENT_ID" />
+            </Principal>
+            <Dependent Role="RESULT_VALUE">
+              <PropertyRef Name="MEASUREMENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LOCATIONS__HV__MEASUREMENTS">
+          <End Role="LOCATION" Type="BreatheModel.Store.LOCATION" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MEASUREMENT" Type="BreatheModel.Store.MEASUREMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOCATION">
+              <PropertyRef Name="LOCATION_ID" />
+            </Principal>
+            <Dependent Role="MEASUREMENT">
+              <PropertyRef Name="LOCATION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EXPTS__HV__LOCS">
+          <End Role="EXPERIMENT" Type="BreatheModel.Store.EXPERIMENT" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LOCATION" Type="BreatheModel.Store.LOCATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EXPERIMENT">
+              <PropertyRef Name="EXPERIMENT_ID" />
+            </Principal>
+            <Dependent Role="LOCATION">
+              <PropertyRef Name="EXPERIMENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0030187">
+          <End Role="LOCATION" Type="BreatheModel.Store.LOCATION" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CALCULATION" Type="BreatheModel.Store.CALCULATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LOCATION">
+              <PropertyRef Name="LOCATION_ID" />
+            </Principal>
+            <Dependent Role="CALCULATION">
+              <PropertyRef Name="LOCATION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BreatheModel" Alias="Self" d4p1:ViewGeneration="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:devart="http://devart.com/schemas/edml/ConceptualSchemaExtensions/1.0" xmlns:ed="http://devart.com/schemas/EntityDeveloper/1.0" annotation:UseStrongSpatialTypes="false" xmlns:d4p1="http://devart.com/schemas/edml/ConceptualSchemaExtensions/1.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BreatheEntities" annotation:LazyLoadingEnabled="true" ed:Guid="e46e2057-4207-42b1-b7ef-777cff8ed986">
+          <EntitySet Name="ResultValues" EntityType="BreatheModel.ResultValue" />
+          <EntitySet Name="Measurements" EntityType="BreatheModel.Measurement" />
+          <EntitySet Name="Locations" EntityType="BreatheModel.Location" />
+          <EntitySet Name="Experiments" EntityType="BreatheModel.Experiment" />
+          <EntitySet Name="Calculations" EntityType="BreatheModel.Calculation" />
+          <AssociationSet Name="MEAS__HV__RES_VALSSet" Association="BreatheModel.MEAS__HV__RES_VALS">
+            <End Role="Measurement" EntitySet="Measurements" />
+            <End Role="ResultValues" EntitySet="ResultValues" />
+          </AssociationSet>
+          <AssociationSet Name="LOCATIONS__HV__MEASUREMENTSSet" Association="BreatheModel.LOCATIONS__HV__MEASUREMENTS">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Measurements" EntitySet="Measurements" />
+          </AssociationSet>
+          <AssociationSet Name="EXPTS__HV__LOCSSet" Association="BreatheModel.EXPTS__HV__LOCS">
+            <End Role="Experiment" EntitySet="Experiments" />
+            <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C0030187Set" Association="BreatheModel.SYS_C0030187">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Calculations" EntitySet="Calculations" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ResultValue" ed:Guid="f02d8cbc-522f-4b47-b564-ed293d484617">
+          <Key>
+            <PropertyRef Name="MeasurementId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="MeasurementId" Type="Guid" Nullable="false" ed:ValidateRequired="true" ed:Guid="00ccdd9f-8d6f-467e-8688-febcce2f0873" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" ed:ValidateMaxLength="100" ed:ValidateRequired="true" ed:Guid="5cb81054-034a-4c60-b56b-8cf38a0955b3" />
+          <Property Name="Value" Type="Double" ed:ValidateRequired="false" ed:Guid="6b9cee94-42e1-4a29-9311-5d12495a848f" />
+          <NavigationProperty Name="Measurement" Relationship="BreatheModel.MEAS__HV__RES_VALS" FromRole="ResultValues" ToRole="Measurement" ed:Guid="fa3d4ac8-4142-4ba3-8fdd-f3e9f07eeb20" />
+        </EntityType>
+        <EntityType Name="Measurement" ed:Guid="17b3ba8a-2ec1-4086-ae44-9b989af046b9">
+          <Key>
+            <PropertyRef Name="MeasurementId" />
+          </Key>
+          <Property Name="MeasurementId" Type="Guid" Nullable="false" ed:ValidateRequired="true" ed:Guid="af33e7ed-407c-42c8-92c0-01d69b98e756" />
+          <Property Name="LocationId" Type="Guid" Nullable="false" ed:ValidateRequired="true" ed:Guid="8a7dad83-84a5-4bfe-b510-97fd40eec6a2" />
+          <Property Name="ResultIndex" Type="Int32" Nullable="false" ed:ValidateRequired="true" ed:Guid="175ee5f2-c797-4479-a96b-fd565791907f" />
+          <Property Name="StageName" Type="String" Nullable="false" MaxLength="32" ed:ValidateMaxLength="32" ed:ValidateRequired="true" ed:Guid="e82698fc-f06c-434a-910f-30625aee727a" />
+          <Property Name="ElapsedTimeInMin" Type="Double" Nullable="false" ed:ValidateRequired="true" ed:Guid="f1df4b3b-720b-4f3d-bd3c-3d87d1b2e716" />
+          <NavigationProperty Name="ResultValues" Relationship="BreatheModel.MEAS__HV__RES_VALS" FromRole="Measurement" ToRole="ResultValues" ed:Guid="ef9405bb-cf63-4376-8cff-d8a270e67397" />
+          <NavigationProperty Name="Location" Relationship="BreatheModel.LOCATIONS__HV__MEASUREMENTS" FromRole="Measurements" ToRole="Location" ed:Guid="1c169dde-7d37-4817-91a9-905f7834c690" />
+        </EntityType>
+        <EntityType Name="Location" ed:Guid="278a1e1e-6501-4886-b5a9-ceb96c3aeac9">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="Guid" Nullable="false" ed:ValidateRequired="true" ed:Guid="2e32e483-5869-4a6e-9f5e-051dad212c7f" />
+          <Property Name="ExperimentId" Type="Guid" Nullable="false" ed:ValidateRequired="true" ed:Guid="00832bef-c8a4-45e0-b2fc-95c142d7463d" />
+          <Property Name="PlatePosition" Type="Int32" Nullable="false" ed:ValidateRequired="true" ed:Guid="4009ccf5-133e-4023-a446-2ae9b9b607fb" />
+          <Property Name="WellAddress" Type="String" Nullable="false" MaxLength="4" ed:ValidateMaxLength="4" ed:ValidateRequired="true" ed:Guid="9d8c2ad5-166b-4ab9-8c9c-e76393b93d8a" />
+          <Property Name="WellRow" Type="String" Nullable="false" MaxLength="2" ed:ValidateMaxLength="2" ed:ValidateRequired="true" ed:Guid="bdf7cfef-72f3-41e0-9625-86008cf88239" />
+          <Property Name="WellCol" Type="String" Nullable="false" MaxLength="2" ed:ValidateMaxLength="2" ed:ValidateRequired="true" ed:Guid="883ee5b5-4216-4865-b208-e1d19bb72af5" />
+          <Property Name="CurveRef" Type="String" MaxLength="100" ed:ValidateMaxLength="100" ed:ValidateRequired="false" ed:Guid="b0db1fbf-d4a8-4e73-bc4c-c0f599a8f0e5" />
+          <Property Name="PrimaryLot" Type="Decimal" ed:ValidateRequired="false" ed:Guid="9c3c3146-08a6-469e-95b1-e7687d60ec67" />
+          <Property Name="PrimaryCompound" Type="String" MaxLength="25" ed:ValidateMaxLength="25" ed:ValidateRequired="false" ed:Guid="232851a6-6728-49ef-a3c8-51f57af93f66" />
+          <Property Name="PrimaryConc" Type="Decimal" ed:ValidateRequired="false" ed:Guid="19ec3f0f-bd55-40b7-a4e3-7a47ace80770" />
+          <Property Name="Valid" Type="Boolean" Nullable="false" DefaultValue="True" ed:ValidateRequired="true" ed:Guid="e3be30ae-a0c3-45dd-b9d8-e47f06f4897f" />
+          <NavigationProperty Name="Measurements" Relationship="BreatheModel.LOCATIONS__HV__MEASUREMENTS" FromRole="Location" ToRole="Measurements" ed:Guid="f27e3ce5-a38d-4b82-9e43-bc0acee327e3" />
+          <NavigationProperty Name="Experiment" Relationship="BreatheModel.EXPTS__HV__LOCS" FromRole="Locations" ToRole="Experiment" ed:Guid="e92b83e7-0530-407c-b55d-21830cb3e91e" />
+          <NavigationProperty Name="Calculations" Relationship="BreatheModel.SYS_C0030187" FromRole="Location" ToRole="Calculations" ed:Guid="890b9f54-8afb-4dd5-963a-b76703be6465" />
+        </EntityType>
+        <EntityType Name="Experiment" ed:Guid="f569bad4-948b-4ccf-97e9-88cbae760b8d">
+          <Key>
+            <PropertyRef Name="ExperimentId" />
+          </Key>
+          <Property Name="ExperimentId" Type="Guid" Nullable="false" ed:ValidateRequired="true" ed:Guid="359679c0-f477-424e-866d-98d921961a4c" />
+          <Property Name="FileName" Type="String" Nullable="false" MaxLength="255" ed:ValidateMaxLength="255" ed:ValidateRequired="true" ed:Guid="d1074c0d-b5dc-4a40-b7e2-aa0cde591175" />
+          <Property Name="FilePath" Type="String" Nullable="false" MaxLength="1024" ed:ValidateMaxLength="1024" ed:ValidateRequired="true" ed:Guid="43a1c19b-b944-4926-87fe-693b70bf132f" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" ed:ValidateMaxLength="100" ed:ValidateRequired="true" ed:Guid="b074f731-6a2a-4d43-a092-56e209d59024" />
+          <Property Name="Protocol" Type="String" Nullable="false" MaxLength="255" ed:ValidateMaxLength="255" ed:ValidateRequired="true" ed:Guid="6205d9d6-c27b-4b5f-b705-04c7b9f8e540" />
+          <Property Name="AnalysisType" Type="String" MaxLength="25" ed:ValidateMaxLength="25" ed:ValidateRequired="false" ed:Guid="368f6880-8f54-45fe-85a1-16b690adb26c" />
+          <Property Name="PlateFormat" Type="Decimal" ed:ValidateRequired="false" ed:Guid="3d69a568-2388-4227-903c-a18219a129c3" />
+          <NavigationProperty Name="Locations" Relationship="BreatheModel.EXPTS__HV__LOCS" FromRole="Experiment" ToRole="Locations" ed:Guid="a09e983c-ef45-40f9-b4f2-b3159930bac2" />
+        </EntityType>
+        <EntityType Name="Calculation" ed:Guid="e9de0ccf-a4f7-4e78-ac25-d007ae12c531">
+          <Key>
+            <PropertyRef Name="LocationId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="LocationId" Type="Guid" Nullable="false" ed:ValidateRequired="true" ed:Guid="ebaefb6d-ea93-4a28-a09a-e23db49f34ce" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" ed:ValidateMaxLength="100" ed:ValidateRequired="true" ed:Guid="91e3bbcb-14ba-432e-99e0-c2c59fd879f2" />
+          <Property Name="Value" Type="Double" ed:ValidateRequired="false" ed:Guid="8bfd184a-398d-4a2a-8c37-68d6e149c34a" />
+          <NavigationProperty Name="Location" Relationship="BreatheModel.SYS_C0030187" FromRole="Calculations" ToRole="Location" ed:Guid="8ffc45d0-274a-4205-9868-39c25eb7388b" />
+        </EntityType>
+        <Association Name="MEAS__HV__RES_VALS" ed:Guid="06a10cef-ebb2-4e4a-b99e-9186758dafe1">
+          <End Role="Measurement" Type="BreatheModel.Measurement" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResultValues" Type="BreatheModel.ResultValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Measurement">
+              <PropertyRef Name="MeasurementId" />
+            </Principal>
+            <Dependent Role="ResultValues">
+              <PropertyRef Name="MeasurementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LOCATIONS__HV__MEASUREMENTS" ed:Guid="1e06a62e-ef95-4566-863d-27b02ef3b8df">
+          <End Role="Location" Type="BreatheModel.Location" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Measurements" Type="BreatheModel.Measurement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Measurements">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EXPTS__HV__LOCS" ed:Guid="8f7bf30c-bb0c-4d6e-b1ff-93e5a1b3f043">
+          <End Role="Experiment" Type="BreatheModel.Experiment" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Locations" Type="BreatheModel.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Experiment">
+              <PropertyRef Name="ExperimentId" />
+            </Principal>
+            <Dependent Role="Locations">
+              <PropertyRef Name="ExperimentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C0030187" ed:Guid="bc4c5c49-a999-4b3b-b693-1ffdadbc0b2e">
+          <End Role="Location" Type="BreatheModel.Location" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Calculations" Type="BreatheModel.Calculation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Calculations">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- MSL content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BeatheEntitiesStoreContainer" CdmEntityContainer="BreatheEntities">
+          <EntitySetMapping Name="ResultValues">
+            <EntityTypeMapping TypeName="BreatheModel.ResultValue">
+              <MappingFragment StoreEntitySet="RESULT_VALUEs">
+                <ScalarProperty Name="MeasurementId" ColumnName="MEASUREMENT_ID" />
+                <ScalarProperty Name="Name" ColumnName="NAME" />
+                <ScalarProperty Name="Value" ColumnName="VALUE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Measurements">
+            <EntityTypeMapping TypeName="BreatheModel.Measurement">
+              <MappingFragment StoreEntitySet="MEASUREMENTs">
+                <ScalarProperty Name="MeasurementId" ColumnName="MEASUREMENT_ID" />
+                <ScalarProperty Name="LocationId" ColumnName="LOCATION_ID" />
+                <ScalarProperty Name="ResultIndex" ColumnName="RESULT_INDEX" />
+                <ScalarProperty Name="StageName" ColumnName="STAGE_NAME" />
+                <ScalarProperty Name="ElapsedTimeInMin" ColumnName="ELAPSED_TIME_IN_MIN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="BreatheModel.Location">
+              <MappingFragment StoreEntitySet="LOCATIONs">
+                <ScalarProperty Name="LocationId" ColumnName="LOCATION_ID" />
+                <ScalarProperty Name="ExperimentId" ColumnName="EXPERIMENT_ID" />
+                <ScalarProperty Name="PlatePosition" ColumnName="PLATE_POSITION" />
+                <ScalarProperty Name="WellAddress" ColumnName="WELL_ADDRESS" />
+                <ScalarProperty Name="WellRow" ColumnName="WELL_ROW" />
+                <ScalarProperty Name="WellCol" ColumnName="WELL_COL" />
+                <ScalarProperty Name="CurveRef" ColumnName="CURVE_REF" />
+                <ScalarProperty Name="PrimaryLot" ColumnName="PRIMARY_LOT" />
+                <ScalarProperty Name="PrimaryCompound" ColumnName="PRIMARY_COMPOUND" />
+                <ScalarProperty Name="PrimaryConc" ColumnName="PRIMARY_CONC" />
+                <ScalarProperty Name="Valid" ColumnName="VALID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Experiments">
+            <EntityTypeMapping TypeName="BreatheModel.Experiment">
+              <MappingFragment StoreEntitySet="EXPERIMENTs">
+                <ScalarProperty Name="ExperimentId" ColumnName="EXPERIMENT_ID" />
+                <ScalarProperty Name="FileName" ColumnName="FILE_NAME" />
+                <ScalarProperty Name="FilePath" ColumnName="FILE_PATH" />
+                <ScalarProperty Name="UserName" ColumnName="USER_NAME" />
+                <ScalarProperty Name="Protocol" ColumnName="PROTOCOL" />
+                <ScalarProperty Name="AnalysisType" ColumnName="ANALYSIS_TYPE" />
+                <ScalarProperty Name="PlateFormat" ColumnName="PLATE_FORMAT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Calculations">
+            <EntityTypeMapping TypeName="BreatheModel.Calculation">
+              <MappingFragment StoreEntitySet="CALCULATIONs">
+                <ScalarProperty Name="LocationId" ColumnName="LOCATION_ID" />
+                <ScalarProperty Name="Name" ColumnName="NAME" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <edmx:Diagrams>
+      <Diagram Name="Main" />
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
