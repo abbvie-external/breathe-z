@@ -40,11 +40,12 @@ Projects:
 ## Prerequisites and building
 
 - .NET Framework 4.8
-- Visual Studio 2022
+- Visual Studio 2026
 
 Open either solution and build. NuGet packages restore automatically. Internal dependency DLLs are checked into the `Dependencies/` folders within each source tree, so no additional package feeds are needed.
 
 **BREATHE-Z runtime requirement:** The instrument control app requires National Instruments DAQmx drivers to be installed on the machine that will communicate with NI hardware.
+**TECC VIEWER build requirement:** Needs SciChart 8.11 license to compile. Dummy key is currently included.
 
 ## Pre-built binaries
 
@@ -52,6 +53,7 @@ Ready-to-run zips are in `compiled-binaries/`:
 
 - `breathe-z.zip` — BREATHE-Z instrument control
 - `breathe-calc.zip` — BREATHE Data Cruncher
+- `breathe-tecc-viewer.zip` — Shows data during collection.
 
 ## Documentation
 
