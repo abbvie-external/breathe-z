@@ -1,0 +1,21 @@
+﻿<Application x:Class="BreatheZ.Ui.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:util="clr-namespace:BreatheZ.Ui.Util"
+             Startup="Application_Startup">
+    <Application.Resources>
+        <util:BooleanToVisibilityConverter x:Key="HideOnTrue" True="Hidden" False="Visible" />
+        <util:BooleanToVisibilityConverter x:Key="HideOnFalse" True="Visible" False="Hidden" />
+        <util:BooleanToVisibilityConverter x:Key="HideOnValid" True="Hidden" False="Visible" />
+        <util:BooleanToVisibilityConverter x:Key="CollapseOnFalse" True="Visible" False="Collapsed" />
+        <util:BooleanToVisibilityConverter x:Key="CollapseOnValid" True="Collapsed" False="Visible" />
+        <util:BooleanToVisibilityConverter x:Key="CollapseOnTrue" True="Collapsed" False="Visible" />
+        <util:VisibilityOnNonZeroConverter x:Key="CollapseOnNonZero" OnZero="Collapsed" OnNonZero="Visible" />
+        <util:VisibilityOnNonZeroConverter x:Key="CollapseOnZero" OnZero="Visible" OnNonZero="Collapsed" />
+        <util:VisibilityOnNullConverter x:Key="CollapseOnNull" OnNull="Collapsed" OnNonNull="Visible" />
+        <util:VisibilityOnNullConverter x:Key="HideOnNull" OnNull="Hidden" OnNonNull="Visible" />
+        <util:VisibilityOnNullConverter x:Key="VisibleOnNull" OnNull="Visible" OnNonNull="Collapsed" />
+        <util:BooleanToProgressStateConverter x:Key="ShowBusy" True="Indeterminate" False="None" />
+        <util:InvertBooleanConverter x:Key="InvertBoolean" />
+    </Application.Resources>
+</Application>

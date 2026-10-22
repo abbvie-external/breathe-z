@@ -1,0 +1,559 @@
+﻿<Window x:Class="BreatheZ.Ui.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:util="clr-namespace:BreatheZ.Ui.Util"
+        xmlns:viewModel="clr-namespace:BreatheZ.Ui.ViewModel"
+        mc:Ignorable="d"
+        Title="BREATHE-Z  (When you absolutely, positively have to get it done in a 24 Well Plate)" Loaded="Window_Loaded"
+        Height="950" Width="1200" WindowState="Maximized" 
+         Icon="/BreatheZ.Ui;component/Images/133733 - breathe lungs.ico" d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        Closing="MainView_OnClosing"
+        >
+    <Window.Resources>
+
+        <Style x:Key="NormalButton" TargetType="Button">
+            <Setter Property="Margin" Value="1.5" />
+        </Style>
+
+        <Style x:Key="PositionButton" TargetType="Button">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="MinWidth" Value="30" />
+            <Setter Property="Padding" Value="3,0,3,0" />
+        </Style>
+
+        <Style x:Key="GridLabel" TargetType="Label">
+            <Setter Property="Margin" Value="1.5" />
+            <Setter Property="Padding" Value="1.5" />
+        </Style>
+
+        <Style x:Key="RightAlignCell" TargetType="{x:Type DataGridCell}" >
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="CenterAlignCell" TargetType="{x:Type DataGridCell}" />
+
+        <util:ExpanderRowSizer x:Key="ExpanderRowSizer"/>
+
+        <Style TargetType="Border" x:Key="RacePitBorderStyle" >
+            <Style.Resources>
+                <SolidColorBrush x:Key="BackBrush" Color="#1111" />
+            </Style.Resources>
+            <Setter Property="Background" Value="{StaticResource BackBrush}"/>
+        </Style>
+
+        <DataTemplate x:Key="titleText">
+            <Border Style="{StaticResource RacePitBorderStyle}" Height="24">
+                <TextBlock Text="{Binding}" Margin="4 0" VerticalAlignment="Center" FontWeight="Normal" TextWrapping="Wrap"
+                           Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}}, Path=ActualWidth}"/>
+            </Border>
+        </DataTemplate>
+
+        <Style TargetType="{x:Type Expander}">
+            <Setter Property="HeaderTemplate" Value="{StaticResource titleText}"/>
+        </Style>
+
+        <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GroupBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="24" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0" BorderThickness="1" BorderBrush="#1111" Background="#1111">
+                                <Label Foreground="Black" Padding="2" VerticalAlignment="Center">
+                                    <ContentPresenter Margin="0" ContentSource="Header" VerticalAlignment="Center" RecognizesAccessKey="True" />
+                                </Label>
+                            </Border>
+
+                            <Border Grid.Row="1" BorderThickness="0">
+                                <ContentPresenter Margin="4" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+    <TabControl SelectionChanged="TabControl_SelectionChanged" Margin="3">
+        <TabItem Header="Main" Name="MainTab">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="500" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Grid.Row="0" x:Name="StatusGroup" HorizontalAlignment="Stretch" Margin="3" >
+                        <GroupBox.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="3,0,3,0" Padding="2" VerticalAlignment="Center"><Run Text="Status"/></TextBlock>
+                            </StackPanel>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="3" Grid.Column="0" Style="{StaticResource GridLabel}" Margin="2" Content="Manifold Position"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding InstrumentModel.ElectrodeManifoldPosition, Mode=OneWay}" HorizontalAlignment="Left" MinWidth="40" IsReadOnly="True"/>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left">
+
+                                <StackPanel Orientation="Horizontal" >
+                                    <Label VerticalAlignment="Center" Content="Z Moving"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="Lime" Visibility="{Binding InstrumentModel.ZStageMoving, Converter={StaticResource CollapseOnFalse}}" Margin="0,1,0,0"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="White" Visibility="{Binding InstrumentModel.ZStageMoving, Converter={StaticResource CollapseOnTrue}}" Margin="0,1,0,0"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" Content="X Moving"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="Lime" Visibility="{Binding InstrumentModel.ElectrodeManifoldMoving, Converter={StaticResource CollapseOnFalse}}" Margin="0,1,0,0"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="White" Visibility="{Binding InstrumentModel.ElectrodeManifoldMoving, Converter={StaticResource CollapseOnTrue}}" Margin="0,1,0,0"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Label VerticalAlignment="Center" Content="Z Axis Up"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="Lime" Visibility="{Binding InstrumentModel.ZStageUp, Converter={StaticResource CollapseOnFalse}}" Margin="0,1,0,0"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="White" Visibility="{Binding InstrumentModel.ZStageUp, Converter={StaticResource CollapseOnTrue}}" Margin="0,1,0,0"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" >
+                                    <Label VerticalAlignment="Center" Content="TECC"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="Lime" Visibility="{Binding InstrumentModel.TeccRecording, Converter={StaticResource CollapseOnFalse}}" Margin="0,1,0,0"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="White" Visibility="{Binding InstrumentModel.TeccRecording, Converter={StaticResource CollapseOnTrue}}" Margin="0,1,0,0"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" >
+                                    <Label VerticalAlignment="Center" Content="Robot In Control"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="Lime" Visibility="{Binding InstrumentModel.ExperimentRunner.IsRunning, Converter={StaticResource CollapseOnFalse}}" Margin="0,1,0,0"/>
+                                    <Rectangle Width="12" Height="12" VerticalAlignment="Center" Stroke="DarkGray"  Fill="White" Visibility="{Binding InstrumentModel.ExperimentRunner.IsRunning, Converter={StaticResource CollapseOnTrue}}" Margin="0,1,0,0"/>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="Simple Moves and Commands" Grid.Row="1" IsEnabled="{Binding InstrumentModel.IsAcceptingCommands}" Margin="3" >
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="16"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource PositionButton}" Click="SendManifoldPostion_OnClick"  Tag="Wash" Content="Wash" MinWidth="80"/>
+                            <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource PositionButton}" Click="SendManifoldPostion_OnClick" Tag="Offset" Content="Offset" MinWidth="80"/>
+                            <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource PositionButton}" Click="SendManifoldPostion_OnClick" Tag="CellPlate_1" Content="Cell Plate 1" MinWidth="80"/>
+
+                            <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource PositionButton}" Click="SendManifoldPostion_OnClick"  Tag="CellPlate_2" Content="Cell Plate 2" MinWidth="80"/>
+                            
+                            <Button Grid.Row="2" Grid.Column="3" Style="{StaticResource PositionButton}" Click="HomeSystem_OnClick" Content="Home" MinWidth="80"/>
+                            <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource PositionButton}" Click="InitTecc_OnClick" Content="Init TECC" MinWidth="80"/>
+
+                            <Button Grid.Row="2" Grid.Column="0"  Style="{StaticResource PositionButton}" Click="ZAxisUp_OnClick" Content="Z Up" MinWidth="80"/>
+                            <Button  Grid.Row="3" Grid.Column="0"  Style="{StaticResource PositionButton}" Click="ZAxisDown_OnClick" Content="Z Down" MinWidth="80"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="TECC Configuration" Grid.Row="2" Margin="3" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Content="Root Folder"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InstrumentModel.TeccModel.DataPath, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="100" Margin="3" Background="Gainsboro" IsReadOnly="True"/>
+                            <Button Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="25" Padding="1" Margin="3" IsEnabled="{Binding CanStartRecording}" Click="ChangeBaseFolder_Click">...</Button>
+                            <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource NormalButton}" VerticalAlignment="Center" Click="TeccNewFile_OnClick" IsEnabled="{Binding MessageLoop.ElectrodeManifoldFree}" Content="Start New File"/>
+                            <TextBox Grid.Row="1" Grid.Column="1"  Text="{Binding InstrumentModel.TeccModel.CurrentFileSanExtension, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="100" Margin="3" Background="Gainsboro" IsReadOnly="True"/>
+                            <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource NormalButton}" VerticalAlignment="Center" Click="TeccFileReName_OnClick" Visibility="{Binding InstrumentModel.TeccModel.CurrentFile, Converter={StaticResource CollapseOnNull}}" Content="Rename"/>
+                            <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource NormalButton}" VerticalAlignment="Center" Click="ClearError_OnClick" IsEnabled="{Binding MessageLoop.ElectrodeManifoldFree}" Content="Clear Errors"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Foreground="Red" Text="{Binding MessageLoop.BlockingError}" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="100" Background="Gainsboro" Margin="3"  IsReadOnly="True"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="TECC Settings" Grid.Row="3" >
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center"><Run Text="Initial RAP (kOhm)"/></TextBlock>
+                                <TextBox Margin="3,1,3,1" Text="{util:SettingBinding InitialRAP}" MinWidth="30"  IsReadOnly="True" VerticalAlignment="Center"/>
+                                <TextBlock VerticalAlignment="Center"><Run Text="Osc Threshold"/></TextBlock>
+                                <TextBox Margin="3,1,3,1" Text="{util:SettingBinding OscThreshold}"  IsReadOnly="True" MinWidth="35" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center"><Run Text="Area (cm^2)"/></TextBlock>
+                                    <TextBox Margin="3,1,3,1" Text="{util:SettingBinding Area}" MinWidth="40" IsReadOnly="True" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center"><Run Text="Min Interval (s)"/></TextBlock>
+                                    <TextBox Margin="3,1,3,1" Text="{util:SettingBinding TimeCheckPointInSeconds}" MinWidth="40" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+
+
+                            <Grid Margin="0,3,3,0" Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="109*"/>
+                                    <ColumnDefinition Width="462*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" HorizontalAlignment="Stretch" Grid.ColumnSpan="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label MinWidth="80" Padding="0,3,3,3" Content="Flexible RTX Settings"/>
+                                </Grid>
+
+                                <DataGrid x:Name="RtxSettings" Grid.Row="1" SelectionMode="Single" ItemsSource="{util:SettingBinding RtxSettings.Settings}" VerticalAlignment="Stretch" CanUserSortColumns="False" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" CanUserAddRows="False" CanUserDeleteRows="False" RowHeaderWidth="0" Grid.ColumnSpan="2">
+                                    <DataGrid.Columns>
+
+                                        <DataGridTemplateColumn Header="Enabled" SortMemberPath="Enabled">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Visibility="{Binding AllValid, Converter={StaticResource HideOnFalse}}" Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Enabled, Mode=TwoWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTextColumn Header="RTX Index" Binding="{Binding RtxIndex, Mode=OneWay}"/>
+                                        <DataGridTextColumn Header="Thres R" Binding="{Binding ThresholdResistance, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <DataGridTextColumn Header="In Amp Gain" Binding="{Binding InAmpGain, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <DataGridTextColumn Header="I Output Gain" Binding="{Binding CurrentOutputGain, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <DataGridTextColumn Header="Stim Ampl" Binding="{Binding StimulusAmplitude, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <DataGridTextColumn Header="I/V Gain" Binding="{Binding CurrentToVoltageGain, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+
+                            <Button Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,12,0,3" Click="SaveSettings_OnClick" Content="Save and Apply Settings on Next Measurement"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Measurements" Grid.Row="4" Margin="3"  IsEnabled="{Binding InstrumentModel.IsAcceptingCommands}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Button Grid.Row="0" Grid.Column="0" Style="{StaticResource PositionButton}" Click="TeccMeasurement_OnClick" Tag="CellPlate_1" Content="1"/>
+                            <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource PositionButton}" Click="TeccMeasurement_OnClick" Tag="Offset" Content="Offset"/>
+                            <Button Grid.Row="0" Grid.Column="2" Style="{StaticResource PositionButton}" Click="TeccMeasurement_OnClick"  Tag="CellPlate_2" Content="2"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+
+                <GridSplitter Grid.Column="1" Grid.RowSpan="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+                <TabControl Grid.Column="2">
+                    <TabItem Header="Run Tasks">
+                        <Grid Margin="3">
+                            
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition MinHeight="18"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" VerticalAlignment="Center" Foreground="BlueViolet" FontWeight="ExtraBold" Text="{Binding InstrumentModel.ExperimentRunner.CurrentStatus}" />
+
+                                <Button Grid.Row="1" Grid.Column="0" Click="StartExperiment" HorizontalAlignment="Left" Margin="0,3,3,3" IsEnabled="{Binding InstrumentModel.ExperimentRunner.IsRunning, Converter={StaticResource InvertBoolean}}">Start/Continue</Button>
+                                <Button Grid.Row="1" Grid.Column="1" Name="PauseButton" Click="PauseExperiment" HorizontalAlignment="Left" Margin="0,3,3,3" IsEnabled="{Binding InstrumentModel.ExperimentRunner.IsRunning}">Pause</Button>
+                                <Button Grid.Row="1" Grid.Column="3" Click="CreateOffsetExperiment" HorizontalAlignment="Left" Margin="0,3,3,3" IsEnabled="{Binding InstrumentModel.ExperimentRunner.IsRunning, Converter={StaticResource InvertBoolean}}">New OffSet Run</Button>
+                                <TextBox  Grid.Row="1" Grid.Column="4" MinWidth="40" VerticalAlignment="Center" Margin="3" Text="{Binding InstrumentModel.OffsetTests, Mode=TwoWay}"></TextBox>
+                                <Button Grid.Row="1" Grid.Column="5" Click="CreateNewExperiment" HorizontalAlignment="Left" Margin="9,3,3,3" IsEnabled="{Binding InstrumentModel.ExperimentRunner.IsRunning, Converter={StaticResource InvertBoolean}}">New Experiment</Button>
+                                <Button Grid.Row="1" Grid.Column="6" Click="ClearExperiment" HorizontalAlignment="Left" Margin="0,3,3,3" IsEnabled="{Binding InstrumentModel.ExperimentRunner.IsRunning, Converter={StaticResource InvertBoolean}}">Clear Experiment</Button>
+                            </Grid>
+                            
+                            <DataGrid Grid.Row="2" SelectionMode="Single" ItemsSource="{Binding InstrumentModel.ExperimentRunner.PendingWorkList}" VerticalAlignment="Stretch" IsReadOnly="True" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False" MinHeight="40" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" RowHeaderWidth="0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Plate Measurement" Binding="{Binding  MeasurementStep}"/>
+                                    <DataGridTextColumn Header="Step Measurement" Binding="{Binding  SubStep}"/>
+                                    <DataGridTextColumn Header="Description" Binding="{Binding  WorkDescription}"/>
+                                    <DataGridTextColumn Header="Location" Binding="{Binding  Location}"/>
+                                    <DataGridTextColumn Header="MiscDescription" Binding="{Binding  MiscDescription}"/>
+                                    <DataGridCheckBoxColumn Header="Time Check Point" Binding="{Binding  TimeCheckPoint}"/>
+                                    <DataGridTextColumn Header="Status" Binding="{Binding  Status}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        
+                    </TabItem>
+
+                        <TabItem Header="Measurements">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <GroupBox x:Name="MeasurementGroup" Header="Measurements" Grid.Row="0" HorizontalAlignment="Stretch" Margin="3">
+                                <Grid Margin="0,3,0,3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label MinWidth="80"  Padding="0,3,3,3" Content="Measurement Log"/>
+                                        <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Click="EditComment_Click" Margin="3" IsEnabled="{Binding InstrumentModel.TeccModel.IsMeasurementSelected}" >Edit Comment</Button>
+                                        <Button Grid.Column="2" Margin="3" HorizontalAlignment="Right" VerticalAlignment="Top" Click="CopyDataToClipboard_Click" Content="Copy All Data to Clipboard"/>
+                                    </Grid>
+
+                                    <DataGrid x:Name="Measurements"  Grid.Row="1" SelectionMode="Single" SelectedItem="{Binding InstrumentModel.TeccModel.SelectedMeasurement}" ItemsSource="{Binding InstrumentModel.TeccModel.Measurements}" VerticalAlignment="Stretch" IsReadOnly="True" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False" MinHeight="40" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" RowHeaderWidth="0">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="#" Binding="{Binding MeasurementIndex}"/>
+                                            <DataGridTextColumn Header="Pos" Binding="{Binding Position}"/>
+                                            <DataGridTextColumn Header="Step" Binding="{Binding MeasurementStep}"/>
+                                            <DataGridTextColumn Header="TECC Time" Binding="{Binding TeccMeasurementTimeS}"/>
+                                            <DataGridTextColumn Header="Time" Binding="{Binding TotalMeasurementTimeS}"/>
+                                            <DataGridTextColumn Header="R" Binding="{Binding RangeR}" Width="Auto"/>
+                                            <DataGridTextColumn Header="R (Raw)" Binding="{Binding RangeRRaw}" Width="Auto"/>
+                                            <DataGridTextColumn Header="PD1" Binding="{Binding RangePd}" Width="Auto"/>
+                                            <DataGridTextColumn Header="I Eq" Binding="{Binding RangeIEq}" Width="Auto"/>
+                                            <DataGridTextColumn Header="Errors" Foreground="Red" Binding="{Binding ErrorText}" Width="Auto"/>
+                                            <DataGridTextColumn Header="Comment" Foreground="Red" Binding="{Binding TransientComment}" Width="Auto"/>
+                                            <DataGridTextColumn Header="RTX Changes" Foreground="Red" Binding="{Binding RtxInfo}" Width="Auto"/>
+                                            <DataGridTextColumn Header="Started" Binding="{Binding MeasurementStart, StringFormat=T}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </GroupBox>
+
+                            <GridSplitter Grid.Row="1" Height="5" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+                            <GroupBox x:Name="ChannelMeasurementsGroup" Header="Individual Measurements" Grid.Row="2" HorizontalAlignment="Stretch" Padding="0,3,3,3" Margin="3,9,3,3">
+                                <Grid Margin="0,3,0,3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label MinWidth="80"  Padding="0,3,3,3" VerticalAlignment="Center" Content="Measurements"/>
+                                        <CheckBox IsChecked="{Binding InstrumentModel.TeccModel.FilterMeasurements}" VerticalAlignment="Center">Filter to Interesting Measurements</CheckBox>
+                                    </StackPanel>
+
+                                    <DataGrid Grid.Row="1" ItemsSource="{Binding InstrumentModel.TeccModel.FilteredMeasurements}" IsReadOnly="True" VerticalAlignment="Stretch" CanUserAddRows="False" CanUserSortColumns="False" CanUserDeleteRows="False" MinHeight="40" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" RowHeaderWidth="0">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Well" Binding="{Binding WellAddress}"/>
+
+                                            <DataGridTextColumn Header="R" CellStyle="{StaticResource RightAlignCell}"  Foreground="Blue" Binding="{Binding Rt}" MinWidth="50"/>
+                                            <DataGridTextColumn Header="Pd1" CellStyle="{StaticResource RightAlignCell}" Foreground="Black" Binding="{Binding Pd1}" MinWidth="50"/>
+                                            <DataGridTextColumn Header="Pd2" CellStyle="{StaticResource RightAlignCell}" Foreground="Green" Binding="{Binding Pd2}" MinWidth="50"/>
+                                            <DataGridTextColumn Header="I Eq" CellStyle="{StaticResource RightAlignCell}"  Foreground="Blue" Binding="{Binding IEq}" MinWidth="50"/>
+                                            <DataGridTextColumn Header="R (Raw)" CellStyle="{StaticResource RightAlignCell}"  Foreground="Blue" Binding="{Binding RtRaw}" MinWidth="50"/>
+                                            <DataGridTextColumn Header="Channel" CellStyle="{StaticResource CenterAlignCell}" Binding="{Binding BoardChannel}"/>
+
+                                            <DataGridTemplateColumn Header="RTX">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="{Binding CurrentRtxR}"/>
+                                                            <Border Visibility="{Binding RtxChange, Converter={StaticResource CollapseOnFalse}}">
+                                                                <TextBlock Foreground="Red" ><Run Text="("/><Run Text=" "/><Run Text="{Binding NextRtxR}"/><Run Text=" "/><Run Text=")"/></TextBlock>
+                                                            </Border>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+
+                                            <DataGridTextColumn Header="Osc" CellStyle="{StaticResource CenterAlignCell}"  Foreground="Red" Binding="{Binding StatusOscillationMsg}"/>
+                                            <DataGridTextColumn Header="V on VT1" CellStyle="{StaticResource CenterAlignCell}"  Foreground="Red" Binding="{Binding StatusVoltageOverflowOnV1Msg}" />
+                                            <DataGridTextColumn Header="V on T2" CellStyle="{StaticResource CenterAlignCell}"  Foreground="Red" Binding="{Binding StatusVoltageOverflowOnV2Msg}" />
+                                            <DataGridTextColumn Header="I on Rt" CellStyle="{StaticResource CenterAlignCell}"  Foreground="Red" Binding="{Binding StatusCurrentOverflowOnRtMsg}" />
+                                            <DataGridTextColumn Header="V on Rt" CellStyle="{StaticResource CenterAlignCell}"  Foreground="Red" Binding="{Binding StatusVoltageOverflowOnRtMsg}" />
+                                            <DataGridTextColumn Header="T#" CellStyle="{StaticResource CenterAlignCell}" Binding="{Binding TeccChannel}" Width="35"/>
+                                            <DataGridTextColumn Header="Board" CellStyle="{StaticResource CenterAlignCell}" Binding="{Binding TeccBoard}" />
+                                            <DataGridTextColumn Header="Chan Index" CellStyle="{StaticResource CenterAlignCell}" Binding="{Binding BoardChannel}" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+    </TabItem>
+
+        <TabItem Header="Low Level Options">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <GroupBox Header="Settings" Grid.Row="0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="3">
+                            <CheckBox IsChecked="{util:SettingBinding InitTeccEveryFile}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Gainsboro" Margin="3,3,12,3">Fully Initialize TECC Every File</CheckBox>
+                            <CheckBox IsChecked="{util:SettingBinding ReverseZAxisSensorLogic}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Gainsboro" Margin="3,3,12,3">Reverse Z Sensor Logic (for 96 Well Version)</CheckBox>
+                            <CheckBox IsChecked="{util:SettingBinding ExportDataWithDataTypes}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Gainsboro" Margin="3,3,12,3">Add Data Type Headers to Exported File</CheckBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="3">
+
+                            <TextBlock Margin="3"  VerticalAlignment="Center">Plate Format</TextBlock>
+                            <ComboBox ItemsSource="{Binding InstrumentModel.TeccModel.PlateFormats}" SelectedItem="{util:SettingBinding PlateFormat}" MinWidth="80" VerticalAlignment="Center" />
+
+                            <TextBlock Margin="3"  VerticalAlignment="Center">Expected TECC Board Count</TextBlock>
+                            <TextBox Margin="3,1,3,1" Text="{util:SettingBinding ExpectedBoardCount}" MinWidth="40" VerticalAlignment="Center" />
+
+                            <CheckBox IsChecked="{util:SettingBinding ThrowOnInvalidDeviceCount}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Gainsboro" Margin="3,3,12,3">
+                                Enforce Valid Device Count (Only uncheck if there are bad/missing TECC boards)
+                            </CheckBox>
+
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="3">
+                            <TextBlock VerticalAlignment="Center" Margin="3">Delay for Voltage Only Measurments (s)</TextBlock>
+                            <TextBox Margin="3,1,3,1" Text="{util:SettingBinding DelayOnNonRealMeasurrements, UpdateSourceTrigger=PropertyChanged}" MinWidth="40" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label>Newport Com Port</Label>
+                            <TextBox Text="{util:SettingBinding XAxisPort}" VerticalAlignment="Center"></TextBox>
+                            <Label>Newport Speed (1-100)</Label>
+                            <TextBox Text="{util:SettingBinding XAxisSpeed}" VerticalAlignment="Center"></TextBox>
+                            <Label>Newport Axis (1-3)</Label>
+                            <TextBox Text="{util:SettingBinding XAxisChannel}" VerticalAlignment="Center"></TextBox>
+                        </StackPanel>
+                        
+                        <Button HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,12,0,3" Click="SaveSettings_OnClick">Save and Apply Settings</Button>
+
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Grid.Row="1" Header="Low Level Debugging and Testing Stuff">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="3">
+                            <CheckBox IsChecked="{util:SettingBinding TeccDebug}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Gainsboro" Margin="3,3,12,3">Enable Fake TECC Debug</CheckBox>
+                            <CheckBox IsChecked="{util:SettingBinding DebugShortSample}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Gainsboro" Margin="3,3,12,3">Use Short Sample for TECC Debug</CheckBox>
+                            <CheckBox IsChecked="{util:SettingBinding SimulateMotionControl}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Gainsboro" Margin="3,3,12,3">Simulate Motion Control</CheckBox>
+                            <CheckBox VerticalAlignment="Center" HorizontalAlignment="Stretch" Background="Gainsboro" Margin="3,3,12,3" IsChecked="True">Do that thing that you do</CheckBox>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Grid.Row="2" Header="Position Map">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        
+                        <Label Grid.Row="0" Grid.Column="0">Wash</Label>
+                        <TextBox Grid.Row="0" Grid.Column="1" Margin="3,1,3,1" Text="{util:SettingBinding PositionWash}" MinWidth="40" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                        <Label Grid.Row="1" Grid.Column="0">Offset</Label>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="3,1,3,1" Text="{util:SettingBinding PositionOffset}" MinWidth="40" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                        <Label Grid.Row="2" Grid.Column="0">Cell Plate 1</Label>
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="3,1,3,1" Text="{util:SettingBinding PositionCellPlate1}" MinWidth="40" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+                        <Label Grid.Row="3" Grid.Column="0">Cell Plate 2</Label>
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="3,1,3,1" Text="{util:SettingBinding PositionCellPlate2}" MinWidth="40" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>

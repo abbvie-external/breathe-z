@@ -1,0 +1,65 @@
+﻿<Window x:Class="BreatheCalc.FourDispense.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:util="clr-namespace:BreatheCalc.FourDispense.Util"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+        MinWidth="800"
+        Loaded="MainWindow_OnLoaded"
+        Title="BREATHE Data Cruncher from SPaRCS" Closing="MainWindow_OnClosing" Icon="iconfinder_weight_lift_activity_fitness_3998567_NPE_icon.ico">
+    <Grid Name="MainGrid" HorizontalAlignment="Stretch" Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Margin="3" Padding="0">File</Label>
+        <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Name="FilePath" Margin="0,2"></TextBox>
+        <Button Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="2,2,0,2" MinWidth="20" Click="PickFile_OnClick" HorizontalAlignment="Left" Width="20">...</Button>
+
+        <CheckBox Name="UseG" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="3" IsChecked="{util:SettingBinding UseG, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Use G Instead of I</CheckBox>
+        <CheckBox Name="CorrectOnMin" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Margin="3" IsChecked="{util:SettingBinding CorrectOnMinimum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Correct On Inhibitor Minimum (No Interpolation)</CheckBox>
+        <CheckBox Name="UseRfumsAuc" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="3" IsChecked="{util:SettingBinding UseRfumsAuc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Use RFUMS AUC</CheckBox>
+
+        <Label Grid.Column="0" Grid.Row="4" Margin="3,6" Padding="0" VerticalAlignment="Center">R Correction</Label>
+        <TextBox Name="RCorrection" Grid.Column="1" Grid.Row="4" Margin="3" Text="{util:SettingBinding RCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+        <Label Grid.Column="0" Grid.Row="5" Margin="3,8,3,4" Padding="0" VerticalAlignment="Center">Forskolin Extrapolation Pts</Label>
+        <TextBox Grid.Column="1" Grid.Row="5"  Margin="3" Text="{util:SettingBinding ForskolinCorrectionPts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="128,0,104,0">
+            <Button Margin="3" Name="btnQC" Click="QcData_OnClick" HorizontalAlignment="Center" VerticalAlignment="Center" Content="QC Data"/>
+            <Button Margin="3" Name="btnCopySF" Click="LoadData_OnClick" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Copy Spotfire Analysis to Clipboard"/>
+            <Button Margin="3" Name="btnCopySummary"  Click="LoadSummary_OnClick" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Copy Summary to Clipboard"/>
+        </StackPanel>
+
+
+        <Border Visibility="Collapsed" Name="DbDisplay" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#E0FFFFFF" Grid.ColumnSpan="4" Grid.RowSpan="9">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label  BorderThickness="0" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center"   FontSize="22" Margin="12">
+                    Uploading to DB
+                </Label>
+                <ProgressBar IsIndeterminate="True" Width="300" Height="30"></ProgressBar>
+            </StackPanel>
+        </Border>
+
+    </Grid>
+</Window>

@@ -1,0 +1,14 @@
+﻿<Application x:Class="Cf.TeccViewer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:util="clr-namespace:Cf.TeccViewer.Util"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <util:BooleanToVisibilityConverter x:Key="HideOnTrueVisibleInDesignMode" True="Hidden" False="Visible" DesignMode="Visible"/>
+        <util:BooleanToVisibilityConverter x:Key="HideOnFalseVisibleInDesignMode" True="Visible" False="Hidden" DesignMode="Visible" />
+        <util:BooleanToVisibilityConverter x:Key="HideOnValidVisibleInDesignMode" True="Hidden" False="Visible" DesignMode="Visible" />
+        <util:BooleanToVisibilityConverter x:Key="CollapseOnFalseVisibleInDesignMode" True="Visible" False="Collapsed"   DesignMode="Visible" />
+        <util:BooleanToVisibilityConverter x:Key="CollapseOnValidVisibleInDesignMode" True="Collapsed" False="Visible"  DesignMode="Visible" />
+        <util:BooleanToVisibilityConverter x:Key="CollapseOnTrueVisibleInDesignMode" True="Collapsed" False="Visible" DesignMode="Visible"  />
+    </Application.Resources>
+</Application>

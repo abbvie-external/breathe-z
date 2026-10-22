@@ -1,0 +1,17 @@
+﻿<Window x:Class="BreatheZ.Ui.View.TextInputView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:BreatheZ.Ui.ViewModel"
+        mc:Ignorable="d"
+        WindowStyle="ToolWindow"
+        Title="{Binding Caption}" Height="100" Width="400" d:DataContext="{d:DesignInstance viewModel:TextInputModel}" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <DockPanel Margin="4" HorizontalAlignment="Stretch" FocusManager.FocusedElement="{Binding ElementName=text}">
+        <TextBox Name="text" DockPanel.Dock="Top" Text="{Binding Text}" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal">
+            <Button Margin="3" Click="Done" IsDefault="True">Done</Button>
+            <Button Margin="3" Click="Cancel">Cancel</Button>
+        </StackPanel>
+    </DockPanel>
+</Window>

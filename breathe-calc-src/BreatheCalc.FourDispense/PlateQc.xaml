@@ -1,0 +1,257 @@
+﻿<Window x:Class="BreatheCalc.FourDispense.PlateQc"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
+        xmlns:util="clr-namespace:BreatheCalc.FourDispense.Util"
+        Title="PlateQc" Height="800" Width="1000" Icon="iconfinder_weight_lift_activity_fitness_3998567_NPE_icon.ico" ShowInTaskbar="False"
+        >
+    <Window.Resources>
+        <Style x:Key="radioStyle" TargetType="RadioButton">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <EventSetter Event="Click" Handler="EventSetter_OnHandler"></EventSetter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <UserControl Grid.Row="0" Name="wellsDisplayControl">
+            <UserControl.Resources>
+
+                <Style x:Key="YAxisTitleStyle" TargetType="s:AxisTitle">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  BorderBrush="Black" Background="LawnGreen" BorderThickness="1" Padding="1" Focusable="False" Margin="2" Click="YAxisAccept_Click" Width="15" Height="15" VerticalAlignment="Center">
+                                    </Button>
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding}"/>
+                                    <Button  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  BorderBrush="Black" Background="Red" BorderThickness="1" Padding="1" Focusable="False" Margin="2"   Click="YAxisReject_Click"  Width="15" Height="15" VerticalAlignment="Center" >
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="LayoutTransform">
+                        <Setter.Value>
+                            <RotateTransform Angle="90"/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <Style x:Key="XAxisTitleStyle" TargetType="s:AxisTitle">
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  BorderBrush="Black" Background="LawnGreen" BorderThickness="1" Padding="1" Focusable="False" Margin="2" Click="XAxisAccept_Click" Width="15" Height="15" VerticalAlignment="Center">
+                                    </Button>
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding}"/>
+                                    <Button  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  BorderBrush="Black" Background="Red" BorderThickness="1" Padding="1" Focusable="False" Margin="2"   Click="XAxisReject_Click"  Width="15" Height="15" VerticalAlignment="Center" >
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <Style x:Key="RightAlignedLabelStyle" TargetType="s:DefaultTickLabel">
+                    <Setter Property="HorizontalAnchorPoint" Value="Right"/>
+                </Style>
+
+                <Style x:Key="YAxisStyle" TargetType="s:AxisBase">
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="AutoRange" Value="Never"/>
+                    <Setter Property="AxisAlignment" Value="Left"/>
+                    <Setter Property="DrawMinorGridLines" Value="False"/>
+                    <Setter Property="DrawMinorTicks" Value="False"/>
+                    <Setter Property="DrawMajorGridLines" Value="False"/>
+                    <Setter Property="DrawMajorBands" Value="False"/>
+                    <Setter Property="TickLabelStyle" Value="{StaticResource RightAlignedLabelStyle}"/>
+                    <Setter Property="TitleStyle" Value="{StaticResource YAxisTitleStyle}"/>
+                </Style>
+
+                <Style x:Key="XAxisStyle" TargetType="s:AxisBase">
+                    <Setter Property="DrawMinorGridLines" Value="False"/>
+                    <Setter Property="AutoRange" Value="Always"></Setter>
+                    <Setter Property="DrawMinorTicks" Value="False"/>
+                    <Setter Property="DrawMajorGridLines" Value="False"/>
+                    <Setter Property="DrawMajorBands" Value="False"/>
+                    <Setter Property="TitleStyle" Value="{StaticResource XAxisTitleStyle}"></Setter>
+                </Style>
+
+                <ItemsPanelTemplate x:Key="YAxesPanel">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+
+
+                <ItemsPanelTemplate x:Key="YAxesPanel24">
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+
+                <ItemsPanelTemplate x:Key="XAxesPanel24">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+
+                <ItemsPanelTemplate x:Key="XAxesPanel">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+
+            </UserControl.Resources>
+
+            <Grid>
+                <!--  Create the chart surface  -->
+                <s:SciChartSurface x:Name="sciIndividual" LeftAxesPanelTemplate="{DynamicResource YAxesPanel}" BottomAxesPanelTemplate="{DynamicResource XAxesPanel}" Background="White" Padding="12" s:ThemeManager.Theme="BrightSpark">
+                    <!--  Create an X Axis with Growby  -->
+                    <s:SciChartSurface.XAxes>
+                        <s:NumericAxis x:Name="X1" Id="X1" Style="{StaticResource XAxisStyle}" Grid.Column="1" AxisTitle="1" />
+                        <s:NumericAxis x:Name="X2" Id="X2" Style="{StaticResource XAxisStyle}" Grid.Column="3" AxisTitle="2" />
+                        <s:NumericAxis x:Name="X3" Id="X3" Style="{StaticResource XAxisStyle}" Grid.Column="5" AxisTitle="3" />
+                        <s:NumericAxis x:Name="X4" Id="X4" Style="{StaticResource XAxisStyle}" Grid.Column="7" AxisTitle="4"/>
+                        <s:NumericAxis x:Name="X5" Id="X5" Style="{StaticResource XAxisStyle}" Grid.Column="9" AxisTitle="5" />
+                        <s:NumericAxis x:Name="X6" Id="X6" Style="{StaticResource XAxisStyle}" Grid.Column="11" AxisTitle="6" />
+                        <s:NumericAxis x:Name="X7" Id="X7" Style="{StaticResource XAxisStyle}" Grid.Column="13" AxisTitle="7"/>
+                        <s:NumericAxis x:Name="X8" Id="X8" Style="{StaticResource XAxisStyle}" Grid.Column="15" AxisTitle="8" />
+                        <s:NumericAxis x:Name="X9" Id="X9" Style="{StaticResource XAxisStyle}" Grid.Column="17" AxisTitle="9" />
+                        <s:NumericAxis x:Name="X10" Id="X10" Style="{StaticResource XAxisStyle}" Grid.Column="19" AxisTitle="10" />
+                        <s:NumericAxis x:Name="X11" Id="X11" Style="{StaticResource XAxisStyle}" Grid.Column="21" AxisTitle="11" />
+                        <s:NumericAxis x:Name="X12" Id="X12" Style="{StaticResource XAxisStyle}" Grid.Column="23" AxisTitle="12"/>
+                    </s:SciChartSurface.XAxes>
+
+                    <s:SciChartSurface.YAxes>
+                        <s:NumericAxis x:Name="Y1" Style="{StaticResource YAxisStyle}" Id="Y1" AxisTitle="A" Grid.Row="0" />
+                        <s:NumericAxis x:Name="Y2" Style="{StaticResource YAxisStyle}" Id="Y2" AxisTitle="B" Grid.Row="2" />
+                        <s:NumericAxis x:Name="Y3" Style="{StaticResource YAxisStyle}" Id="Y3" AxisTitle="C" Grid.Row="4"/>
+                        <s:NumericAxis x:Name="Y4" Style="{StaticResource YAxisStyle}" Id="Y4" AxisTitle="D" Grid.Row="6"/>
+                        <s:NumericAxis x:Name="Y5" Style="{StaticResource YAxisStyle}" Id="Y5" AxisTitle="E" Grid.Row="8"/>
+                        <s:NumericAxis x:Name="Y6" Style="{StaticResource YAxisStyle}" Id="Y6" AxisTitle="F" Grid.Row="10"/>
+                        <s:NumericAxis x:Name="Y7" Style="{StaticResource YAxisStyle}" Id="Y7" AxisTitle="G" Grid.Row="12"/>
+                        <s:NumericAxis x:Name="Y8" Style="{StaticResource YAxisStyle}" Id="Y8" AxisTitle="H" Grid.Row="14"/>
+                    </s:SciChartSurface.YAxes>
+
+                    <s:SciChartSurface.ChartModifier>
+                        <s:ModifierGroup>
+                            <s:SeriesSelectionModifier></s:SeriesSelectionModifier>
+                        </s:ModifierGroup>
+                    </s:SciChartSurface.ChartModifier>
+                </s:SciChartSurface>
+            </Grid>
+        </UserControl>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <Label VerticalAlignment="Center">Plate Position</Label>
+                <RadioButton Name="rb0" Style="{StaticResource radioStyle}">0 (Offset)</RadioButton>
+                <RadioButton Name="rb1" Style="{StaticResource radioStyle}">1</RadioButton>
+                <RadioButton Name="rb2" Style="{StaticResource radioStyle}">2</RadioButton>
+                <RadioButton Name="rb3" Style="{StaticResource radioStyle}">3</RadioButton>
+                <RadioButton Name="rb4" Style="{StaticResource radioStyle}">4</RadioButton>
+                <RadioButton Name="rb5" Style="{StaticResource radioStyle}">5</RadioButton>
+                <RadioButton Name="rb6" Style="{StaticResource radioStyle}">6</RadioButton>
+                <Label VerticalAlignment="Center" Margin="6,3,3,3">Range</Label>
+                <TextBox VerticalAlignment="Center" MinWidth="40" Text="{util:SettingBinding RangeMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxBase_OnTextChanged"></TextBox>
+                <Label VerticalAlignment="Center" Margin="0">-</Label>
+                <TextBox VerticalAlignment="Center" MinWidth="40" Text="{util:SettingBinding RangeMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxBase_OnTextChanged"></TextBox>
+                <Button VerticalAlignment="Center" Click="AutoScaleAll_Click" Margin="3">Fit All</Button>
+                <CheckBox Name="AutoScaleOnPlateChange" IsChecked="True" VerticalAlignment="Center" Margin="3">Auto Scale on Plate Change</CheckBox>
+            </StackPanel>
+            <Button Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="70" Margin="3,3,12,3" Click="Button_Click">Done</Button>
+        </Grid>
+    </Grid>
+</Window>
